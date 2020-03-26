@@ -56,8 +56,6 @@ function CategoryItem({ id, name, categories }) {
     );
 }
 
-const mapStateToProps = (state) => ({
-    categories: getCategories(state),
-});
+const mapStateToProps = (state) => ({ categories: getCategories(state) });
 
 export default withRouter(connect(mapStateToProps)(CategoryItem));

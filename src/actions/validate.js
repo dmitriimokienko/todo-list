@@ -1,4 +1,4 @@
-export const validateTitle = values => {
+export const validateTitle = (values) => {
     const title = typeof values.name !== 'undefined' ? values.name.trim() : '';
     const minLength = 3;
     const maxLength = 50;
@@ -11,7 +11,7 @@ export const validateTitle = values => {
     return '';
 };
 
-export const validateDescription = values => {
+export const validateDescription = (values) => {
     const description = typeof values.description !== 'undefined' ? values.description.trim() : '';
     const minLength = 3;
     const maxLength = 250;
@@ -24,7 +24,7 @@ export const validateDescription = values => {
     return '';
 };
 
-export const validate = values => {
+export const validate = (values) => {
     const titleError = validateTitle(values);
     const descriptionError = validateDescription(values);
 

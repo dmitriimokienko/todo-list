@@ -1,4 +1,4 @@
-const constants = {
+const actions = {
     FIND_BY_TITLE: 'FIND_BY_TITLE',
     ADD_NEW_CATEGORY: 'ADD_NEW_CATEGORY',
     ADD_NEW_TASK: 'ADD_NEW_TASK',
@@ -8,4 +8,4 @@ const constants = {
     EDIT_TASK: 'EDIT_TASK'
 };
 
-export default constants;
+export default actions;

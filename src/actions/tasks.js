@@ -1,34 +1,28 @@
-import { SubmissionError } from 'redux-form';
 import { addNewTask, editTask } from './action-creators';
-import { validate, validateTitle } from './validate';
+import { validate } from './validate';
+import { checkError } from './helpers';
 
-export const handleAddTask = values => dispatch => {
-    const errorMessage = validateTitle(values);
-
-    if (errorMessage) {
-        throw new SubmissionError({ _error: errorMessage });
-    } else {
-        const addedTask = {
-            id: new Date().valueOf(),
-            name: values.name,
-            isDone: false
-        };
-        dispatch(addNewTask(addedTask));
+export const handleAddTask = (values) => (dispatch) => {
+    try {
+        checkError(values);
+        dispatch(addNewTask({ id: new Date().valueOf(), name: values.name, isDone: false }));
+    } catch (e) {
+        console.error(e);
     }
 };
 
-export const handleEditTask = values => dispatch => {
-    const errorMessage = validate(values);
-
-    if (errorMessage) {
-        throw new SubmissionError({ _error: errorMessage });
-    } else {
-        const updatedTask = {
-            id: values.id,
-            name: values.name,
-            isDone: values.isDone,
-            description: values.description
-        };
-        dispatch(editTask(updatedTask));
+export const handleEditTask = (values) => (dispatch) => {
+    try {
+        checkError(values, validate);
+        dispatch(
+            editTask({
+                id: values.id,
+                name: values.name,
+                isDone: values.isDone,
+                description: values.description,
+            }),
+        );
+    } catch (e) {
+        console.error(e);
     }
 };
