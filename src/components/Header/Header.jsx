@@ -8,7 +8,7 @@ import AddingBlock from '../AddingBlock';
 import DoneFilter from '../DoneFilter';
 
 class Header extends React.Component {
-    handleSubmit = values => {
+    handleSubmit = (values) => {
         const { history } = this.props;
         let filterValue = values.search || '';
         const query = queryString.parse(history.location.search);
@@ -22,7 +22,7 @@ class Header extends React.Component {
 
         history.push({
             pathname: history.location.pathname,
-            search
+            search,
         });
     };
 
@@ -33,7 +33,7 @@ class Header extends React.Component {
 
         history.push({
             pathname: history.location.pathname,
-            search: `isdone=${isDone}`
+            search: `isdone=${isDone}`,
         });
     };
 
