@@ -7,56 +7,38 @@ import ProgressBar from '../ProgressBar';
 import AddingBlock from '../AddingBlock';
 import DoneFilter from '../DoneFilter';
 
-class Header extends React.Component {
-    handleSubmit = (values) => {
-        const { history } = this.props;
-        let filterValue = values.search || '';
-        const query = queryString.parse(history.location.search);
-        const isDone = query.isdone === 'true';
-        let search = `isdone=${isDone}`;
+function Header({ history }) {
+    const query = queryString.parse(history.location.search);
+    const defaultSearchValue = `isdone=${query.isdone === 'true'}`;
+    const pathname = history.location.pathname;
 
-        filterValue = filterValue.trim();
-        if (filterValue.length > 2) {
-            search = `filter=${filterValue}&isdone=${isDone}`;
-        }
-
-        history.push({
-            pathname: history.location.pathname,
-            search,
-        });
+    const handleSubmit = ({ search = '' }) => {
+        const filterValue = search.trim();
+        const searchValue = filterValue.length > 2 ? `filter=${filterValue}&${defaultSearchValue}` : defaultSearchValue;
+        history.push({ pathname, search: searchValue });
     };
 
-    handleClearSearchInput = () => {
-        const { history } = this.props;
-        const query = queryString.parse(history.location.search);
-        const isDone = query.isdone === 'true';
-
-        history.push({
-            pathname: history.location.pathname,
-            search: `isdone=${isDone}`,
-        });
+    const handleClearSearchInput = () => {
+        history.push({ pathname, search: defaultSearchValue });
     };
 
-    render() {
-        return (
-            <header className="todo-list-header">
-                <nav className="navbar row">
-                    <div className="todo-list-header todo-list-header__logo">
-                        <HeaderLogo />
-                    </div>
-
-                    <div className="todo-list-header todo-list-header_filter">
-                        <HeaderFilter onSubmit={this.handleSubmit} clearSearchInput={this.handleClearSearchInput} />
-                        <DoneFilter />
-                    </div>
-                </nav>
-                <ProgressBar />
-                <div className="todo-list-header todo-list-header_add-block">
-                    <AddingBlock />
+    return (
+        <header className="todo-list-header">
+            <nav className="navbar row">
+                <div className="todo-list-header todo-list-header__logo">
+                    <HeaderLogo />
                 </div>
-            </header>
-        );
-    }
+                <div className="todo-list-header todo-list-header_filter">
+                    <HeaderFilter onSubmit={handleSubmit} clearSearchInput={handleClearSearchInput} />
+                    <DoneFilter />
+                </div>
+            </nav>
+            <ProgressBar />
+            <div className="todo-list-header todo-list-header_add-block">
+                <AddingBlock />
+            </div>
+        </header>
+    );
 }
 
 export default withRouter(Header);

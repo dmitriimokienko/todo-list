@@ -1,113 +1,63 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
-import PropTypes from 'prop-types';
 import CategoryList from '../CategoriesList';
 import ModalDialogBox from '../Modal';
 import Confirm from '../Confirm';
 import { getCategories } from '../../reselectors/categories';
 
-class CategoryItem extends Component {
-    static propTypes = {
-        id: PropTypes.number.isRequired,
-        name: PropTypes.string.isRequired
-    };
+function CategoryItem({ id, name, categories }) {
+    const [collapse, setCollapse] = useState(true);
+    const [addModal, setAddModal] = useState(false);
+    const [removeModal, setRemoveModal] = useState(false);
+    const [editModal, setEditModal] = useState(false);
 
-    constructor(props) {
-        super(props);
+    const nestedList = categories.filter(({ parentId }) => parentId === id);
 
-        this.state = {
-            isCollapse: true,
-            isAddingModalShow: false,
-            isChangeTitleModalShow: false,
-            isRemoveConfirmShow: false
-        };
-    }
+    const buttonClassName = 'caregory-btn caregory-btn-collapse';
+    const buttonStyle = nestedList.length > 0 ? buttonClassName : `${buttonClassName}-hidden`;
 
-    toggleCollapse = () =>
-        this.setState(prevState => ({
-            isCollapse: !prevState.isCollapse
-        }));
+    return (
+        <React.Fragment>
+            <li className="list-group-item list-group-item-category">
+                <div className="caregory-item">
+                    <button className={buttonStyle} onClick={() => setCollapse(!collapse)}>
+                        <i className="glyphicon glyphicon-menu-down" />
+                    </button>
+                    <Link to={`/category/${id}`}>
+                        <span href="#" className="caregory-item-title" data-name="caregory-title">
+                            {name}
+                        </span>
+                    </Link>
+                    <button className="caregory-btn caregory-btn-edit" onClick={() => setEditModal(!editModal)}>
+                        <i className="glyphicon glyphicon-pencil" />
+                    </button>
+                    <button
+                        data-test="remove-categoty-btn"
+                        className="caregory-btn caregory-btn-remove pull-right"
+                        onClick={() => setRemoveModal(!removeModal)}
+                    >
+                        <i className="glyphicon glyphicon-trash" />
+                    </button>
+                    <button className="caregory-btn caregory-btn-add pull-right" onClick={() => setAddModal(!addModal)}>
+                        <i className="glyphicon glyphicon-plus" />
+                    </button>
+                </div>
+            </li>
 
-    toggleAddingModal = () =>
-        this.setState(prevState => ({
-            isAddingModalShow: !prevState.isAddingModalShow
-        }));
-
-    toggleRemoveConfirm = () =>
-        this.setState(prevState => ({
-            isRemoveConfirmShow: !prevState.isRemoveConfirmShow
-        }));
-
-    toggleChangeTitleModal = () =>
-        this.setState(prevState => ({
-            isChangeTitleModalShow: !prevState.isChangeTitleModalShow
-        }));
-
-    getChildrenList = id => this.props.categories.filter(item => item.parentId === id);
-
-    render() {
-        const { id, name } = this.props;
-        const nestedList = this.getChildrenList(id);
-
-        return (
-            <React.Fragment>
-                <li className="list-group-item list-group-item-category">
-                    <div className="caregory-item">
-                        <button
-                            className={
-                                nestedList.length !== 0
-                                    ? 'caregory-btn caregory-btn-collapse'
-                                    : 'caregory-btn caregory-btn-collapse-hidden'
-                            }
-                            onClick={this.toggleCollapse}
-                        >
-                            <i className="glyphicon glyphicon-menu-down" />
-                        </button>
-
-                        <Link to={`/category/${id}`}>
-                            <span href="#" className="caregory-item-title" data-name="caregory-title">
-                                {name}
-                            </span>
-                        </Link>
-
-                        <button className="caregory-btn caregory-btn-edit" onClick={this.toggleChangeTitleModal}>
-                            <i className="glyphicon glyphicon-pencil" />
-                        </button>
-                        <button
-                            data-test="remove-categoty-btn"
-                            className="caregory-btn caregory-btn-remove pull-right"
-                            onClick={this.toggleRemoveConfirm}
-                        >
-                            <i className="glyphicon glyphicon-trash" />
-                        </button>
-                        <button className="caregory-btn caregory-btn-add pull-right" onClick={this.toggleAddingModal}>
-                            <i className="glyphicon glyphicon-plus" />
-                        </button>
-                    </div>
-                </li>
-
-                {!this.state.isCollapse && <CategoryList nestedCategories={nestedList} isMoveTask={false} />}
-
-                {this.state.isAddingModalShow && (
-                    <ModalDialogBox onClose={this.toggleAddingModal} id={id} editCategoryTitle={false} />
-                )}
-
-                {this.state.isChangeTitleModalShow && (
-                    <ModalDialogBox onClose={this.toggleChangeTitleModal} id={id} editCategoryTitle={true} />
-                )}
-
-                {this.state.isRemoveConfirmShow && (
-                    <Confirm onClose={this.toggleRemoveConfirm} categoryId={id} categoryTitle={name} />
-                )}
-            </React.Fragment>
-        );
-    }
+            {!collapse && <CategoryList nestedCategories={nestedList} isMoveTask={false} />}
+            {addModal && <ModalDialogBox onClose={() => setAddModal(!addModal)} id={id} editCategoryTitle={false} />}
+            {editModal && <ModalDialogBox onClose={() => setEditModal(!editModal)} id={id} editCategoryTitle={true} />}
+            {removeModal && (
+                <Confirm onClose={() => setRemoveModal(!removeModal)} categoryId={id} categoryTitle={name} />
+            )}
+        </React.Fragment>
+    );
 }
 
-const mapStateToProps = state => ({
-    categories: getCategories(state)
+const mapStateToProps = (state) => ({
+    categories: getCategories(state),
 });
 
 export default withRouter(connect(mapStateToProps)(CategoryItem));
