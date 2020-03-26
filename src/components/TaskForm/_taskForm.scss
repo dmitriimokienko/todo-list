@@ -1,0 +1,10 @@
+.btn-group-edit-task {
+    text-align: right;
+    &-save {
+        margin-right: 20px;
+    }
+}
+
+.edit-task-textarea {
+    resize: none;
+}

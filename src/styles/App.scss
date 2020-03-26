@@ -1,0 +1,33 @@
+@import '../components/AddCategoryForm/_addCategoryForm.scss';
+@import '../components/AddingBlock/_addingBlock.scss';
+@import '../components/AddModalForm/_addModalForm.scss';
+@import '../components/AddTaskForm/_addTaskForm.scss';
+@import '../components/CategoriesList/_categoriesList.scss';
+@import '../components/CategoryItemMoveTask/_categoryItemMoveTask.scss';
+@import '../components/CategotyItem/_categoryItem.scss';
+@import '../components/Confirm/_confirm.scss';
+@import '../components/DoneFilter/_doneFilter.scss';
+@import '../components/EditModalForm/_editModalForm.scss';
+@import '../components/EditTaskContent/_editTaskContent.scss';
+@import '../components/Header/_header.scss';
+@import '../components/HeaderFilter/_headerFilter.scss';
+@import '../components/HeaderLogo/_headerLogo.scss';
+@import '../components/MainContent/_mainContent.scss';
+@import '../components/Modal/_modal.scss';
+@import '../components/ProgressBar/_progressBar.scss';
+@import '../components/TaskForm/_taskForm.scss';
+@import '../components/TaskItem/_taskItem.scss';
+@import '../components/TaskList/_taskList.scss';
+
+.container-fluid {
+    max-width: 1200px;
+}
+
+.error-form {
+    color: #ff0000;
+    font-weight: 600;
+}
+
+.category-list {
+    margin-bottom: 0;
+}

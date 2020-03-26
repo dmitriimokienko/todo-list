@@ -1,0 +1,22 @@
+.caregory {
+    &-btn {
+        background-color: transparent;
+        border: 1px solid grey;
+        margin: 5px;
+        border-radius: 5px;
+        &-collapse {
+            visibility: visible;
+            &-hidden {
+                visibility: hidden;
+            }
+        }
+    }
+    &-item-title {
+        max-width: 150px;
+        text-overflow: ellipsis;
+    }
+}
+
+.list-group-item-category {
+    padding-left: 0;
+}

@@ -1,0 +1,8 @@
+.category-list {
+  list-style-type: none;
+}
+
+.category-list > .category-list {
+  padding-left: 40px;
+  margin-top: 0;
+}

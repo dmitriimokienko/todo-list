@@ -1,0 +1,15 @@
+.task {
+    &-btn {
+        background-color: transparent;
+        margin: 5px;
+        border-radius: 5px;
+    }
+    &-item {
+        padding: 20px 10px;
+        &-title {
+            font-size: 14pt;
+            padding-left: 10px;
+            text-decoration: none;
+        }
+    }
+}
